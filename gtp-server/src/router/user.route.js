@@ -5,10 +5,19 @@ const User =  require('../model/user.model')
 
 //création d'un user
 
-router.post('/', async (req,res)=>{
-    const newUser = new User(req.body)
-    await newUser.save()
-    res.sendStatus(200);
+router.post('/inscription', async (req,res)=>{
+    const user = await User.findOne({ name: req.body.name }).exec()
+    console.log(user)
+    if(user){
+        res.send({error:'Un utilisateur posséde déja ce nom'});
+    }else{
+        const hashedPassword = await User.hashPassword(req.body.password);
+        req.body.password = hashedPassword
+        const newUser = new User(req.body)
+        await newUser.save()
+        res.sendStatus(200);
+    }
+
 })
 
 //recupération des users
@@ -16,6 +25,18 @@ router.post('/', async (req,res)=>{
 router.get('/', async (req,res)=>{
     const users = await User.find({}).exec()
     res.send(users)
+})
+
+//connexion d'un user
+
+router.post('/connexion', async (req,res)=>{
+    const user = await User.findOne({name: req.body.name}).exec()
+    if(!user || !user.comparePassword(req.body.password)){
+        res.send({error:'Mot de passe ou nom d\'utilisateur incorrect'});
+    }else{
+        res.send(user)
+    }
+
 })
 
 //assignation d'une tâche

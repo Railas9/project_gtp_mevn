@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import axios from 'axios';
 
 const router = useRouter()
@@ -13,11 +13,36 @@ const user = reactive({
   occupied: false
 })
 
+//tableau reactif d'erreur lors de la validation du formulaire
+
+const errors = reactive([])
+
+const confirmPassword = ref('')
+
 const validFrom = async () => {
-await axios.post('http://localhost:8000/user', user)
-router.push({
-    path: '/task'
-  })
+
+  errors.splice(0,errors.length)
+
+  if(!user.name){ errors.push('Veuillez saisir un nom d\'utilisateur') }
+
+  if(!user.password){ errors.push('Veuillez saisir un mot de passe') }
+
+  if(errors.length) return
+
+  if(user.password != confirmPassword.value) { errors.push('Les mots de passes ne correspondent pas') }
+
+  if(errors.length) return
+
+  const {data} = await axios.post('http://localhost:8000/user/inscription', user)
+
+  if(data.error){ errors.push(data.error) }
+
+  if(errors.length) return
+
+  router.push({
+      path: '/connexion'
+    })
+
 }
 </script>
 
@@ -25,18 +50,19 @@ router.push({
   <div class="parent">
     <div class="card container">
       <h2>Inscription</h2>
+        <template v-if="errors">
+          <p v-for="error in errors" class="errors" >{{error}}</p>
+        </template>
       <form>
           <label>Saisissez un nom d'utilisateurs</label><br>
           <input type='text' v-model='user.name'><br>
           <label>Saisissez un mot de passe</label><br>
           <input type='password' v-model='user.password'><br>
           <label>Confirmez le mot de passe</label><br>
-          <input type='password'><br>
+          <input type='password' v-model='confirmPassword'><br>
           <button class="btn btn-primary" @click.prevent="validFrom()">Valider</button>
       </form>
-      <router-link to="/connexion">
           <button class="btn btn-reverse-primary">Se connecter</button>
-      </router-link>
     </div>
   </div>
 </template>
