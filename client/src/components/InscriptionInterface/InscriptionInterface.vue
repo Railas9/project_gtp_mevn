@@ -62,7 +62,7 @@ const validFrom = async () => {
           <input type='password' v-model='confirmPassword'><br>
           <button class="btn btn-primary" @click.prevent="validFrom()">Valider</button>
       </form>
-          <button class="btn btn-reverse-primary">Se connecter</button>
+          <button class="btn btn-reverse-primary" @click="router.push({path: '/connexion'})">Se connecter</button>
     </div>
   </div>
 </template>

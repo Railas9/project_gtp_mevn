@@ -1,6 +1,6 @@
 # FirstProject
 
-Test d'entreprise planete online
+Test d'entreprise 
 
 ## Description du projet
 

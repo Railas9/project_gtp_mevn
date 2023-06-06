@@ -7,7 +7,6 @@ const User =  require('../model/user.model')
 
 router.post('/inscription', async (req,res)=>{
     const user = await User.findOne({ name: req.body.name }).exec()
-    console.log(user)
     if(user){
         res.send({error:'Un utilisateur posséde déja ce nom'});
     }else{
@@ -31,7 +30,8 @@ router.get('/', async (req,res)=>{
 
 router.post('/connexion', async (req,res)=>{
     const user = await User.findOne({name: req.body.name}).exec()
-    if(!user || !user.comparePassword(req.body.password)){
+    const verdict =  await user.comparePassword(req.body.password)
+    if(!user || !verdict){
         res.send({error:'Mot de passe ou nom d\'utilisateur incorrect'});
     }else{
         res.send(user)
