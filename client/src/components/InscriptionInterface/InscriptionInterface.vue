@@ -15,7 +15,7 @@ const user = reactive({
 
 //tableau reactif d'erreur lors de la validation du formulaire
 
-const errors = reactive([])
+const errors = reactive<String[]>([])
 
 const confirmPassword = ref('')
 

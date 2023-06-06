@@ -4,8 +4,8 @@ import AddTask from '@/components/TaskInterface/components/AddTask.vue';
 import TaskList from '@/components/TaskInterface/components/TaskList.vue';
 import UserList from '@/components/TaskInterface/components/UserList.vue';
 import { reactive, onMounted } from "vue";
-import Task from '@/Interfaces/taskInterface.ts'
-import User from '@/Interfaces/userInterface.ts'
+import type {Task} from '@/Interfaces/taskInterface'
+import type {User} from '@/Interfaces/userInterface'
 import axios from 'axios';
 
 // creation des variables reactive users  et tasks
@@ -24,7 +24,7 @@ onMounted( async () => {
 
 // met à jour les données lors des évenements des composants enfants
 
-const getAll = (data) => {
+const getAll = (data: { users : User[], tasks : Task[]}) => {
   if(data.users){
     users.splice(0,users.length, ...data.users)
     tasks.splice(0,tasks.length, ...data.tasks)

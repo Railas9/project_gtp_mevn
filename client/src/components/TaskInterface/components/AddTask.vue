@@ -2,6 +2,7 @@
 import { reactive, ref } from "vue";
 import axios from 'axios';
 import {onMounted} from 'vue'
+import type {Task} from '@/Interfaces/taskInterface'
 
 //évenement permettant d'envoyé les données reactive mis a jour au composant parent TaskInterface
 
@@ -13,7 +14,7 @@ const date = ref([ { hours: 8, minutes: 0 }, { hours: 15, minutes: 0 }]);
 
 //tableau reactif d'erreur lors de la validation du formulaire
 
-const errors = reactive([])
+const errors = reactive<String[]>([])
 
 //mise en place d'un objet task reactive
 
@@ -27,13 +28,13 @@ const task = reactive<Task>({
 
 //ajoute les données des horaires da la balise VueDatePicker à l'objet task reactive
 
-const handleDate = (modelData) => {
+const handleDate = (modelData : any) => {
   date.value = modelData;
   task.startHour = date.value[0]
   task.endHour = date.value[1]
 }
 
-const sendData = async (task) => {
+const sendData = async (task: Task) => {
 
 //vide le tableau d'erreur
 
@@ -41,10 +42,10 @@ const sendData = async (task) => {
 
 //heures mis en format "00:00"
 
-  let hour1 = date.value[0].hours
-  let hour2 = date.value[1].hours
-  let minute1 = date.value[0].minutes
-  let minute2 = date.value[1].minutes
+  let hour1 : any = date.value[0].hours 
+  let hour2 : any  = date.value[1].hours 
+  let minute1 : any = date.value[0].minutes 
+  let minute2 : any = date.value[1].minutes
  
   if (hour1 < 10) hour1 = "0"+ hour1;
   if (hour2 < 10) hour2 = "0"+ hour2;

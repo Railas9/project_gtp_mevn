@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, onUpdated, computed, ref} from "vue";
+import type {Task} from '@/Interfaces/taskInterface'
 import axios from 'axios';
 
 //récupération des props du composant parent TaskInterface
@@ -16,7 +17,7 @@ const searchQuery = ref('');
 
 // suppression d'une task
 
-const deleteTask = async (id) => {
+const deleteTask = async (id : String) => {
   const {data} = await axios.delete(`http://localhost:8000/task/${id}`)
   emit('onUpdateAll', data)
 }
@@ -24,29 +25,34 @@ const deleteTask = async (id) => {
 // renvoie un nouveau tableau filtré grace à searchQuery
 
 const sortedTasks = computed(() => {
-  return tasks.filter(task => task.info.toLowerCase().includes(searchQuery.value.toLowerCase().trim()));
+  return tasks.filter((task : Task) => task.info.toLowerCase().includes(searchQuery.value.toLowerCase().trim()));
 })
 
 // assignation d'une task
 
-const addUserToTask = async (taskId, userId?) => {
-  const {data} = await axios.patch(`http://localhost:8000/user/${taskId}/${userId}`)
+const addUserToTask = async (taskId : String, e: Event) => {
+  const target = event!.target as HTMLButtonElement;
+  const {data} = await axios.patch(`http://localhost:8000/user/${taskId}/${target.value}`)
   emit('onUpdateAll', data)
 }
 
 // tri des tasks en fonction des heures de debut et de fin
 
-const sortArray = (e) => {
+const sortArray = (e : Event) => {
+
+  
+  const target = event!.target as HTMLButtonElement;
+
 
   // recupération de l'attribut name de la balise bouton afin de reconnaitre quel bouton a été appuyé
   
   // le name contient ":" puis est splité afin de connaitre chaque bouton
 
-  const [startOrEnd, recentOrLatest] = e.split(':')
+  const [startOrEnd, recentOrLatest] = target.name.split(':')
 
   // les données sont mis en format Date afin de pouvoir les comparer puis sont trié
 
-  tasks.sort((a,b) =>{
+  tasks.sort((a : Task, b: Task) =>{
 
   let hour = [];
 
@@ -100,15 +106,15 @@ const sortArray = (e) => {
         <div>
             <p style="text-align: center">Heure debut</p>
             <div>
-              <button class='btn btn-primary' style="margin-right: 5px" name="start:recent" @click="sortArray($event.target.name)">Plus récent</button>
-              <button class='btn btn-reverse-primary' name="start:latest" @click="sortArray($event.target.name)">Moins récent</button>
+              <button class='btn btn-primary' style="margin-right: 5px" name="start:recent" @click="sortArray($event)">Plus récent</button>
+              <button class='btn btn-reverse-primary' name="start:latest" @click="sortArray($event)">Moins récent</button>
             </div>  
         </div> 
         <div>
             <p style="text-align: center">Heure fin</p>
             <div>
-              <button class='btn btn-primary' style="margin-right: 5px" name="end:recent" @click="sortArray($event.target.name)">Plus récent</button>
-              <button class='btn btn-reverse-primary' name="end:latest" @click="sortArray($event.target.name)">Moins récent</button>
+              <button class='btn btn-primary' style="margin-right: 5px" name="end:recent" @click="sortArray($event)">Plus récent</button>
+              <button class='btn btn-reverse-primary' name="end:latest" @click="sortArray($event)">Moins récent</button>
             </div>  
         </div> 
       </div>
@@ -120,7 +126,7 @@ const sortArray = (e) => {
           <p class='hours'>Heure de debut: {{task.startHour}} &#x2192; Heure de fin: {{task.endHour}}</p>
           <p>{{task.info}}</p>
         </div>
-        <select @change='addUserToTask(task._id, $event.target.value)'>
+        <select @change='addUserToTask(task._id, $event)'>
           <option value=""> -- </option>
 
       <!-- affichage dynamique des users dans un select, si le user n'est pas occupé 
