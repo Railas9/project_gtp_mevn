@@ -1,10 +1,6 @@
 # FirstProject
 
-<<<<<<< HEAD
-Test d'entreprise 
-=======
 Projet test
->>>>>>> 0c99c24f7f767b0c2b39c31b827f849664a200bc
 
 ## Description du projet
 
