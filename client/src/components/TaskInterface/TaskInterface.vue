@@ -8,7 +8,7 @@ import type {Task} from '@/Interfaces/taskInterface'
 import type {User} from '@/Interfaces/userInterface'
 import axios from 'axios';
 
-const baseURI: string = import.meta.env.VITE_BASE_URI || process.env.BASE_URI
+const baseURI: string = import.meta.env.VITE_BASE_URI || import.meta.env.BASE_URI
 
 
 // creation des variables reactive users  et tasks

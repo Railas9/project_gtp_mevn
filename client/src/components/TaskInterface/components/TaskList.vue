@@ -4,8 +4,7 @@ import type {Task} from '@/Interfaces/taskInterface'
 import axios from 'axios';
 
 
-const baseURI: string = import.meta.env.VITE_BASE_URI || process.env.BASE_URI
-
+const baseURI: string = import.meta.env.VITE_BASE_URI || import.meta.env.BASE_URI
 
 //récupération des props du composant parent TaskInterface
 

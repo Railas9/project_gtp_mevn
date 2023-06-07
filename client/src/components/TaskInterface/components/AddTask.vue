@@ -5,7 +5,7 @@ import {onMounted} from 'vue'
 import type {Task} from '@/Interfaces/taskInterface'
 
 
-const baseURI: string = import.meta.env.VITE_BASE_URI || process.env.BASE_URI
+const baseURI: string = import.meta.env.VITE_BASE_URI || import.meta.env.BASE_URI
 
 //évenement permettant d'envoyé les données reactive mis a jour au composant parent TaskInterface
 
