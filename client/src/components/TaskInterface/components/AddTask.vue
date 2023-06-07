@@ -4,6 +4,9 @@ import axios from 'axios';
 import {onMounted} from 'vue'
 import type {Task} from '@/Interfaces/taskInterface'
 
+
+const baseURI: string = import.meta.env.VITE_BASE_URI || process.env.BASE_URI
+
 //évenement permettant d'envoyé les données reactive mis a jour au composant parent TaskInterface
 
 let emit = defineEmits(['onUpdateAll'])
@@ -77,7 +80,7 @@ const sendData = async (task: Task) => {
 
   if (errors.length) return
 
-  const {data} = await axios.post('http://localhost:8000/task/', task)
+  const {data} = await axios.post(`${baseURI}/task/`, task)
   emit('onUpdateAll', data)
 }
 

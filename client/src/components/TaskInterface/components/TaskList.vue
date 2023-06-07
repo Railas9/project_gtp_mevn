@@ -3,6 +3,10 @@ import { reactive, onUpdated, computed, ref} from "vue";
 import type {Task} from '@/Interfaces/taskInterface'
 import axios from 'axios';
 
+
+const baseURI: string = import.meta.env.VITE_BASE_URI || process.env.BASE_URI
+
+
 //récupération des props du composant parent TaskInterface
 
 const {tasks, users} = defineProps(['tasks', 'users'])
@@ -18,7 +22,7 @@ const searchQuery = ref('');
 // suppression d'une task
 
 const deleteTask = async (id : String) => {
-  const {data} = await axios.delete(`http://localhost:8000/task/${id}`)
+  const {data} = await axios.delete(`${baseURI}/task/${id}`)
   emit('onUpdateAll', data)
 }
 
@@ -32,7 +36,7 @@ const sortedTasks = computed(() => {
 
 const addUserToTask = async (taskId : String, e: Event) => {
   const target = event!.target as HTMLButtonElement;
-  const {data} = await axios.patch(`http://localhost:8000/user/${taskId}/${target.value}`)
+  const {data} = await axios.patch(`${baseURI}/user/${taskId}/${target.value}`)
   emit('onUpdateAll', data)
 }
 

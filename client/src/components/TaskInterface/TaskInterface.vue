@@ -8,6 +8,9 @@ import type {Task} from '@/Interfaces/taskInterface'
 import type {User} from '@/Interfaces/userInterface'
 import axios from 'axios';
 
+const baseURI: string = import.meta.env.VITE_BASE_URI || process.env.BASE_URI
+
+
 // creation des variables reactive users  et tasks
 
 const tasks = reactive<Task[]>([])
@@ -16,9 +19,9 @@ const users = reactive<User[]>([])
 // récupération de l'ensembles des données users et tasks lors de la mise en place du composant
 
 onMounted( async () => { 
-  const {data : taskData} = await axios.get('http://localhost:8000/task')
+  const {data : taskData} = await axios.get(`${baseURI}/task`)
   tasks.push(...taskData)
-  const {data : userData} = await axios.get('http://localhost:8000/user')
+  const {data : userData} = await axios.get(`${baseURI}/user`)
   users.push(...userData)
 })
 

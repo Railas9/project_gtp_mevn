@@ -3,6 +3,8 @@ import { useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
 import axios from 'axios';
 
+const baseURI: string = import.meta.env.VITE_BASE_URI || process.env.BASE_URI
+
 const router = useRouter()
 
 // creation d'un objet user reactif
@@ -34,7 +36,7 @@ const validFrom = async () => {
 
   console.log(user)  
   
-  const {data} = await axios.post('http://localhost:8000/user/connexion', user)
+  const {data} = await axios.post(`${baseURI}/user/connexion`, user)
 
   if(data.error){
       errors.push(data.error)
