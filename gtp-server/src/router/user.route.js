@@ -12,9 +12,9 @@ let isCreatingUser = false;
 router.post('/inscription', async (req,res)=>{
 
     if (isCreatingUser) {
-        res.send({ error: 'Une inscription est déjà en cours pour cet utilisateur' });
+        res.send({error: 'Une inscription est déjà en cours pour cet utilisateur' });
       }
-    
+    isCreatingUser = true;
     try {
         const user = await User.findOne({ name: req.body.name }).exec()
         if(user){
