@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
 import axios from 'axios';
 
-const baseURI: string = import.meta.env.VITE_BASE_URI || import.meta.env.BASE_URI
+const baseURI: string = import.meta.env.VITE_BASE_URI || "https://to-do-vue-server.onrender.com"
 
 const router = useRouter()
 

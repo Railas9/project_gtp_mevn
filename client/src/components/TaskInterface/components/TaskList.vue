@@ -4,7 +4,7 @@ import type {Task} from '@/Interfaces/taskInterface'
 import axios from 'axios';
 
 
-const baseURI: string = import.meta.env.VITE_BASE_URI || import.meta.env.BASE_URI
+const baseURI: string = import.meta.env.VITE_BASE_URI || "https://to-do-vue-server.onrender.com"
 
 //récupération des props du composant parent TaskInterface
 
