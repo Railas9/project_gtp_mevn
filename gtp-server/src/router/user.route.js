@@ -5,16 +5,19 @@ const User =  require('../model/user.model')
 
 //création d'un user
 
-// verrouillage 
+// verrouillage pour eviter les surchages de compte identique
 
-let isCreatingUser = false;
+const createUserLock = {};
 
 router.post('/inscription', async (req,res)=>{
 
-    if (isCreatingUser) {
-        res.send({error: 'Une inscription est déjà en cours pour cet utilisateur' });
+    if (createUserLock[req.body.name]) {
+        res.send({ error: 'Une inscription est déjà en cours pour cet utilisateur' });
+        return;
       }
-    isCreatingUser = true;
+
+    isCreatingUser[req.body.name] = true;
+
     try {
         const user = await User.findOne({ name: req.body.name }).exec()
         if(user){
@@ -31,8 +34,7 @@ router.post('/inscription', async (req,res)=>{
         console.error(error);
         res.sendStatus(500);
     } finally {
-        isCreatingUser = false;
-
+       delete createUserLock[req.body.name]
     }
 
 })
