@@ -8,7 +8,7 @@ import type {Task} from '@/Interfaces/taskInterface'
 import type {User} from '@/Interfaces/userInterface'
 import axios from 'axios';
 
-const baseURI: string = import.meta.env.VITE_BASE_URI || "https://to-do-vue-server.onrender.com"
+const baseURI: string = "https://to-do-vue-server.onrender.com"
 
 
 // creation des variables reactive users  et tasks
