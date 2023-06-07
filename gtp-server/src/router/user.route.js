@@ -5,16 +5,34 @@ const User =  require('../model/user.model')
 
 //création d'un user
 
+// verrouillage 
+
+let isCreatingUser = false;
+
 router.post('/inscription', async (req,res)=>{
-    const user = await User.findOne({ name: req.body.name }).exec()
-    if(user){
-        res.send({error:'Un utilisateur posséde déja ce nom'});
-    }else{
-        const hashedPassword = await User.hashPassword(req.body.password);
-        req.body.password = hashedPassword
-        const newUser = new User(req.body)
-        await newUser.save()
-        res.sendStatus(200);
+
+    if (isCreatingUser) {
+        res.send({ error: 'Une inscription est déjà en cours pour cet utilisateur' });
+      }
+    
+    try {
+        const user = await User.findOne({ name: req.body.name }).exec()
+        if(user){
+            res.send({error:'Un utilisateur posséde déja ce nom'});
+            return
+        }else{
+            const hashedPassword = await User.hashPassword(req.body.password);
+            req.body.password = hashedPassword
+            const newUser = new User(req.body)
+            await newUser.save()
+            res.sendStatus(200);
+        }
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500);
+    } finally {
+        isCreatingUser = false;
+
     }
 
 })
