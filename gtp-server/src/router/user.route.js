@@ -16,7 +16,7 @@ router.post('/inscription', async (req,res)=>{
         return;
       }
 
-    isCreatingUser[req.body.name] = true;
+      createUserLock[req.body.name] = true;
 
     try {
         const user = await User.findOne({ name: req.body.name }).exec()

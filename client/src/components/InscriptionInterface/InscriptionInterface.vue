@@ -15,6 +15,8 @@ const user = reactive({
   occupied: false
 })
 
+const isLoading = ref(false)
+
 //tableau reactif d'erreur lors de la validation du formulaire
 
 const errors = reactive<String[]>([])
@@ -22,7 +24,7 @@ const errors = reactive<String[]>([])
 const confirmPassword = ref('')
 
 const validFrom = async () => {
-
+  
   errors.splice(0,errors.length)
 
   if(!user.name){ errors.push('Veuillez saisir un nom d\'utilisateur') }
